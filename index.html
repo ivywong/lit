@@ -1,0 +1,170 @@
+<html>
+	<head>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.css" />
+	<script src="http://code.jquery.com/jquery-1.11.1.min.js"></script>
+	<script src="http://code.jquery.com/mobile/1.4.3/jquery.mobile-1.4.3.min.js"></script>
+	<script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
+	<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
+	<link rel="stylesheet" href="lit.css" />
+	<script src="litscript.js"></script>
+	<script id="panel-init">
+		$(function() {
+			$( "body>[data-role='panel']" ).panel().enhanceWithin();
+		});
+	</script>
+	<!-- <script src = "googleBooksAccess.js"></script> -->
+	<title>Lit</title>
+	</head>
+	
+	<body>
+		
+	  <div data-role="page" id="home">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>		
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p id="welcome"></p>
+					<form id="bookInput">
+						<p>Add a book...</p>
+						<p><input type='text' id='titleInput' placeholder='Title'></input></p>
+						<p><input type='text' id='authorInput' placeholder='Author'></input></p>
+						
+						<!-- <p><b><i>{{title}}</i> {{author}}</b></p> -->
+						<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					</form>
+					<div>
+						<!-- <p><input type="search" id="searchone" placeholder="Search..."><p> -->
+						<hr>
+						<p><ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="allBooks">
+
+						<ul></p>
+					</div>
+				</div>
+			</div>
+		</div><!--End homepage -->
+
+		<div data-role="page" id="read">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p><b>I read all these books.</b></p>
+					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					<hr>
+					<p>
+						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="readBooks">
+
+						<ul>
+					</p>
+				</div>
+			</div>
+		</div><!--End read books page -->
+		
+		<div data-role="page" id="wishlist">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p><b>I want to read these books.</b></p>
+					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					<hr>
+					<p>
+						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="to-read">
+
+						<ul>
+					</p>
+				</div>
+			</div>
+		</div><!--End to read books page -->
+		
+		<div data-role="page" id="fav">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p><b>These are my favorite things.</b></p>
+				</div>
+			</div>
+		</div><!--End favorite books page -->
+		
+		<div data-role="page" id="timeline">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p><b>This is an awesome timeline.</b></p>
+				</div>
+			</div>
+		</div><!--End timeline page -->
+		
+		<div data-role="page" id="quotes">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p><b>Here are quotes. - Shakespeare</b></p>
+				</div>
+			</div>
+		</div><!--End quotes page -->
+		
+		<div data-role="panel" id="myPanel" data-position="left" data-display="push" data-theme="a"> 
+				<h2>Menu</h2>
+				<ul data-role="listview">
+					<li><a href="#home">Home</a></li>
+					<li><a href="#read">Books I've Read </a></li>
+					<li><a href="#wishlist">Books to Read </a></li>
+					<div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
+						<h1>Shelves</h1>
+						<a href="#myPopup" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-right">Add New</a>
+						<div data-role="popup" id="myPopup" data-theme="a">
+							<p>
+							<form id="myForm">
+								<label for="Add New" class="ui-field-contain">Add New Shelf:</label>
+								<input type="text" name="NewAddition" id="addNew"></input>
+								<input type="submit" value="Add"></input>
+							</form>
+							</p>
+						</div>
+						<ul data-role="listview" class="listItems" id="woohoo">
+							
+						</ul>
+					</div>
+					<li><a href="#timeline">Timeline</a></li>
+					<li><a href="#fav">Favorites</a></li>
+					<li><a href="#quotes">Quotes</a></li>
+				</ul>
+			</div>
+		  
+	</body>
+</html>
