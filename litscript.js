@@ -2,6 +2,7 @@ var ref = new Firebase("https://testingdbs.firebaseio.com/users");
 var booksRef;
 var loggedIn = false;
 var uid = "";
+var name = "";
 
 var auth = new FirebaseSimpleLogin(ref, function(error, user){
 	if (error) {
@@ -13,33 +14,46 @@ var auth = new FirebaseSimpleLogin(ref, function(error, user){
     	loggedIn = true;
 		uid = user.uid;
 
+		//redirect user to home page
+		$( ":mobile-pagecontainer" ).pagecontainer( "change", "#home", { role: "page" } );
+
 		localStorage.setItem('token', user.firebaseAuthToken);
 		
 		console.log("Logged in as: " + user.uid);
-		
+
+		if(user.provider === "facebook"){
+			name = user.thirdPartyUserData.name;
+			$("#welcome").append("Welcome, " , name);
+		}	
+
 		ref.child(user.uid).once('value', function(ss) {
 			var userID = ss.val();
-			if( userID === null ) {
-				console.log("New User!");
+			//check if user already exists
+
+			if( userID === null) {
+				
+				console.log("New user!");
 				var profileObj = {
 					id: user.id,
-					uid: user.uid,
-					name: user.thirdPartyUserData.name
-					//userData: user.thirdPartyUserData
+					uid: user.uid
 				};
-				ref.child(user.uid).set(profileObj);
+				if(user.provider === "facebook"){
+					profileObj.name = name;
+				}
+				ref.set(profileObj);
 			} else {
-				console.log("Already here");
+				console.log("Already here.");
+				console.log(ss.val());
+				console.log(ss.val()=== null)
 			}
 		});
+		
 		ref = new Firebase("https://testingdbs.firebaseio.com/users/" + uid);
 		booksRef = ref.child("books");
-
+		
 		checkLoggedIn();
   	} else {
     	// user is logged out
-    	loggedIn = false;
-    	uid = "";
     	console.log("loggedout")
     	checkLoggedIn();
   	}
@@ -58,13 +72,46 @@ function checkLoggedIn(){
 
 	console.log("loggedIn = ", loggedIn)
 }
+
+function signUp(){
+	var email = $("#register-email").val();
+	var password = $("#register-password").val();
+	auth.createUser(email, password, function(error, user) {
+  		if (error === null) {
+    		console.log("User created successfully:", user);
+		} else {
+		    console.log("Error creating user:", error);
+		    alert(error);
+		}
+	});
+}
+
+function emailLogin(){
+	var email = $("#login-email").val();
+	var password = $("#login-password").val();
+	auth.login('password', {
+  		email: email,
+  		password: password
+	});
+}
 	
 function loginWithFacebook() {
 	auth.login("facebook");
 }
 
 function logout(){
+	clearLists();
+	$("#welcome").empty();
+	ref = new Firebase("https://testingdbs.firebaseio.com/users");
+	loggedIn = false;
+    uid = "";
 	auth.logout();
+	$( ":mobile-pagecontainer" ).pagecontainer( "change", "#main", { role: "page" } );
+}
+
+function clearLists(){
+	$("#readBooks, #readingBooks, #allBooks, #to-read").empty();
+	console.log("cleared");
 }
 
 function addtoList(){
@@ -87,20 +134,37 @@ $(document).ready( function(){
 		return false;
 	});
 
+	$("#bookInput").submit( function(event){
+		event.preventDefault();
+		addBook();
+		return false;
+	});
+
 	$('#bookInput').keypress(function (e) {
 		//console.log(e.keyCode);
 		if (e.keyCode == 13) {
-			var author = $('#authorInput').val();
-			var title = $('#titleInput').val();
-			//console.log(title, author);
-			booksRef.child(title).set({"author": author, "title": title});
-			$('#titleInput').val('');
-			$('#authorInput').val('');
+			addBook();
 		}
 	});
 });
 
+function addBook(){
+	var author = $('#authorInput').val();
+	var title = $('#titleInput').val();
+	var status = $("#statusInput").val();
+	//console.log(title, author);
+	if(status === ""){
+		console.log("no status");
+		status = "read";
+	}
+	booksRef.child(title).set({"author": author, "title": title, "status":status });
+	$('#titleInput').val('');
+	$('#authorInput').val('');
+	$("#statusInput").val("");
+}
+
 function printBooks(){
+	clearLists();
 	booksRef.on("child_added", function (snapshot) {
 		//console.log(snapshot.val());
 		displayBook(snapshot);
@@ -113,6 +177,7 @@ function displayBook(snap){
 	//get current page
 	var page = $(":mobile-pagecontainer").pagecontainer("getActivePage")[0].id;
 	book = snap.val();
+	//reload books on current page
 	if(page === "home"){
 		//Refresh all books list
 		$("#allBooks").append("<li><a href='#'><h2><i>" + book["title"] + "</i></h2><p>" + book["author"] + "</h2></p></a></li>");
@@ -129,6 +194,12 @@ function displayBook(snap){
 			$("#to-read").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + "</h2></p></a></li>");
 			$("#to-read").listview();
 			$("#to-read").listview("refresh");
+		}
+	} else if(page === "reading"){
+		if(book.status === "reading"){
+			$("#readingBooks").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + "</h2></p></a></li>");
+			$("#readingBooks").listview();
+			$("#readingBooks").listview("refresh");
 		}
 	}
 }
