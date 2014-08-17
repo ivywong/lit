@@ -1,0 +1,7 @@
+.showIfLoggedIn {
+	display: none;
+}
+
+.hideIfLoggedIn {
+	display: inline;
+}
