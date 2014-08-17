@@ -18,31 +18,65 @@
 	</head>
 	
 	<body>
+
+		<div data-role="page" id="main">
+			<div data-role="header">
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn ui-btn-right" onclick="loginWithFacebook()">Login with FB</a>
+				<a href="#popupRegister" data-rel="popup" class="ui-btn ui-corner-all ui-btn-inline hideIfLoggedIn" data-transition="pop">Register</a>
+				<div data-role="popup" id="popupRegister" data-theme="a" class="ui-corner-all">
+				    <form id="register">
+				        <div style="padding:10px 20px;">
+				            <h3>Register</h3>
+				            <input type="text" id="register-email" placeholder="Email" data-theme="a">
+				            <input type="password" id="register-password" placeholder="Password" data-theme="a">
+				            <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b" onclick="signUp()">Sign Up</button>
+				        </div>
+				    </form>
+				</div>
+				<a href="#popupLogin" data-rel="popup" class="ui-btn ui-corner-all ui-btn-inline hideIfLoggedIn" data-transition="pop">Login</a>
+				<div data-role="popup" id="popupLogin" data-theme="a" class="ui-corner-all">
+				    <form id="register">
+				        <div style="padding:10px 20px;">
+				            <input type="text" id="login-email" placeholder="Email" data-theme="a">
+				            <input type="password" id="login-password" placeholder="Password" data-theme="a">
+				            <button type="submit" class="ui-btn ui-corner-all ui-shadow ui-btn-b" onclick="emailLogin()">Sign In</button>
+				        </div>
+				    </form>
+				</div>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>		
+		</div><!-- End splash/main page-->
 		
-	  <div data-role="page" id="home">
+	  	<div data-role="page" id="home">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
 				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>		
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<p id="welcome"></p>
+					<h2 id="welcome"></h2>
 					<form id="bookInput">
 						<p>Add a book...</p>
 						<p><input type='text' id='titleInput' placeholder='Title'></input></p>
 						<p><input type='text' id='authorInput' placeholder='Author'></input></p>
-						
-						<!-- <p><b><i>{{title}}</i> {{author}}</b></p> -->
+						<div class="ui-field-contain">
+						    <label for="select-custom-1">Status:</label>
+						    <select name="select-custom-1" id="statusInput" data-native-menu="false">
+						        <option value="read">Read</option>
+						        <option value="reading">Reading</option>
+						        <option value="to read">Going to Read</option>
+						    </select>
+						</div>
+						<p><input type="submit" data-theme="b" id="addBook" value="Add Book"></input></p>
 						<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					</form>
 					<div>
-						<!-- <p><input type="search" id="searchone" placeholder="Search..."><p> -->
 						<hr>
 						<p><ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="allBooks">
-
+							<!-- Books Here -->
 						<ul></p>
 					</div>
 				</div>
@@ -64,7 +98,7 @@
 					<hr>
 					<p>
 						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="readBooks">
-
+							<!-- Books Here -->
 						<ul>
 					</p>
 				</div>
@@ -86,12 +120,34 @@
 					<hr>
 					<p>
 						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="to-read">
-
+							<!-- Books Here -->
 						<ul>
 					</p>
 				</div>
 			</div>
 		</div><!--End to read books page -->
+
+		<div data-role="page" id="reading">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
+				<h1 title="Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<p><b>I'm reading these books.</b></p>
+					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					<hr>
+					<p>
+						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="readingBooks">
+							<!-- Books Here -->
+						<ul>
+					</p>
+				</div>
+			</div>
+		</div><!--End reading books page -->
 		
 		<div data-role="page" id="fav">
 			<div data-role="header">
@@ -103,7 +159,10 @@
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<p><b>These are my favorite things.</b></p>
+					<p><b>These are my favorite books.</b></p>
+					<p><ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="favorites">
+						<!-- Books Here -->
+					<ul></p>
 				</div>
 			</div>
 		</div><!--End favorite books page -->
@@ -143,7 +202,8 @@
 				<ul data-role="listview">
 					<li><a href="#home">Home</a></li>
 					<li><a href="#read">Books I've Read </a></li>
-					<li><a href="#wishlist">Books to Read </a></li>
+					<li><a href="#reading">Books I'm Reading </a></li>
+					<li><a href="#wishlist">Books to Read</a></li>
 					<div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
 						<h1>Shelves</h1>
 						<a href="#myPopup" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-right">Add New</a>
