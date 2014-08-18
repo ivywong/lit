@@ -86,7 +86,6 @@
 		<div data-role="page" id="read">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
 				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
@@ -108,7 +107,6 @@
 		<div data-role="page" id="wishlist">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
 				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
@@ -130,7 +128,6 @@
 		<div data-role="page" id="reading">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
 				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
@@ -149,43 +146,9 @@
 			</div>
 		</div><!--End reading books page -->
 		
-		<div data-role="page" id="fav">
-			<div data-role="header">
-				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
-			</div>	
-		
-			<div data-role="main" class="ui-content">
-				<div class="showIfLoggedIn">
-					<p><b>These are my favorite books.</b></p>
-					<p><ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="favorites">
-						<!-- Books Here -->
-					<ul></p>
-				</div>
-			</div>
-		</div><!--End favorite books page -->
-		
-		<div data-role="page" id="timeline">
-			<div data-role="header">
-				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
-			</div>	
-		
-			<div data-role="main" class="ui-content">
-				<div class="showIfLoggedIn">
-					<p><b>This is an awesome timeline.</b></p>
-				</div>
-			</div>
-		</div><!--End timeline page -->
-		
 		<div data-role="page" id="quotes">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn" onclick="loginWithFacebook()">Login with FB</a>
 				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
@@ -193,9 +156,49 @@
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
 					<p><b>Here are quotes. - Shakespeare</b></p>
+					<p><form id="quoteForm">
+								<!-- <label for="title" class="ui-field-contain">Title:</label> -->
+								<!-- <input type="text" name="Title" id="title"></input> -->
+								<p>Choose a book from the dropdown:<p>
+								<form>
+									<input data-type="search" placeholder="Search for a title..." id="searchBooks">
+								</form>
+								<select id="selectQuoteBook" data-filter="true" data-input="#searchBooks">
+									
+								</select>
+								<p>Quote:</p>
+								<textarea name="NewQuote" id="addNew"></textarea>
+								<input type="submit" value="Add New Quote" data-theme="b" onclick="addQuote()"></input>
+						</form></p>
+					<p><a href="#" onclick="printBooks()">Reload Quotes</a></p>	
+					<div data-role="list-view" data-filter-placeholder="Search..." data-filter="true" data-inset="true" id="quoteList">
+						
+					</div>	
 				</div>
 			</div>
 		</div><!--End quotes page -->
+		
+		<div data-role="page" id="bookinfo">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>	
+		
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<a href ="#" class="ui-btn ui-btn-icon-left ui-icon-edit ui-corner-all ui-btn-inline">Edit</a>
+					<h1 id="currbooktitle"></h1>
+					<h2 id="currbookauthor"></h2>
+					<h4 id="currbookstatus"></h4>
+					<hr>
+					<h3>Quotes</h3>
+					<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="bookquotes">
+					
+					</ul>
+				</div>
+			</div>
+		</div><!--End book information page -->
 		
 		<div data-role="panel" id="myPanel" data-position="left" data-display="push" data-theme="a"> 
 				<h2>Menu</h2>
@@ -204,7 +207,7 @@
 					<li><a href="#read">Books I've Read </a></li>
 					<li><a href="#reading">Books I'm Reading </a></li>
 					<li><a href="#wishlist">Books to Read</a></li>
-					<div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
+					<!-- <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
 						<h1>Shelves</h1>
 						<a href="#myPopup" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-right">Add New</a>
 						<div data-role="popup" id="myPopup" data-theme="a">
@@ -219,10 +222,8 @@
 						<ul data-role="listview" class="listItems" id="woohoo">
 							
 						</ul>
-					</div>
-					<li><a href="#timeline">Timeline</a></li>
-					<li><a href="#fav">Favorites</a></li>
-					<li><a href="#quotes">Quotes</a></li>
+					</div> -->
+					<li><a href="#quotes" onclick="printBooks()">Quotes</a></li>
 				</ul>
 			</div>
 		  
