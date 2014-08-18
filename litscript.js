@@ -161,6 +161,15 @@ function addBook(){
 	$('#titleInput').val('');
 	$('#authorInput').val('');
 	$("#statusInput").val("");
+	printBooks();
+}
+
+function deleteBook(clicked){
+	var title = $(clicked).parent().find(".booktitle").text()
+	console.log("Deleted " + title);
+	var book = booksRef.child(title);
+	book.remove();
+	printBooks();
 }
 
 function printBooks(){
@@ -180,26 +189,27 @@ function displayBook(snap){
 	//reload books on current page
 	if(page === "home"){
 		//Refresh all books list
-		$("#allBooks").append("<li><a href='#'><h2><i>" + book["title"] + "</i></h2><p>" + book["author"] + "</h2></p></a></li>");
+		$("#allBooks").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 		$("#allBooks").listview();
 		$("#allBooks").listview("refresh");
 	} else if(page === "read") {
 		if(book.status === "read"){
-			$("#readBooks").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + "</h2></p></a></li>");
+			$("#readBooks").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 			$("#readBooks").listview();
 			$("#readBooks").listview("refresh");
 		}
 	} else if(page === "wishlist"){
 		if(book.status === "to read"){
-			$("#to-read").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + "</h2></p></a></li>");
+			$("#to-read").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 			$("#to-read").listview();
 			$("#to-read").listview("refresh");
 		}
 	} else if(page === "reading"){
 		if(book.status === "reading"){
-			$("#readingBooks").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + "</h2></p></a></li>");
+			$("#readingBooks").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</h2></p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 			$("#readingBooks").listview();
 			$("#readingBooks").listview("refresh");
 		}
 	}
+	console.log("Displayed");
 }
