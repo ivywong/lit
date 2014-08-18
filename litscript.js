@@ -110,11 +110,11 @@ function logout(){
 }
 
 function clearLists(){
-	$("#readBooks, #readingBooks, #allBooks, #to-read").empty();
+	$("#readBooks, #readingBooks, #allBooks, #to-read, #quoteList, #selectQuoteBook").empty();
 	console.log("cleared");
 }
 
-function addtoList(){
+/* function addtoList(){
 	var newAddition=$('input[id="addNew"]').val().trim();
 	if ( newAddition ) {
         $('.listItems').append('<li>'+newAddition+'</li>');
@@ -122,13 +122,19 @@ function addtoList(){
 	}
 	$("#woohoo").listview();		
 	$("#woohoo").listview("refresh");
-}
+} */
 
 $(document).ready( function(){
 	//checkLoggedIn();
 	console.log("Ready.");
 
 	$("#myForm").submit( function(event){
+		event.preventDefault();
+		//addtoList();
+		return false;
+	});
+	
+	$("#quoteForm").submit( function(event){
 		event.preventDefault();
 		addtoList();
 		return false;
@@ -164,12 +170,49 @@ function addBook(){
 	printBooks();
 }
 
+function addQuote(){
+	var title = $('#selectQuoteBook').val();
+	var quote = $("#addNew").val();
+	//console.log(title, author);
+	//alert(quote)
+	booksRef.child(title + "/quotes").push(quote);
+	$('#selectQuoteBook').val('');
+	$('#addNew').val('');
+	printBooks();
+}
+
 function deleteBook(clicked){
-	var title = $(clicked).parent().find(".booktitle").text()
+	var title = $(clicked).parent().find(".booktitle").text();
 	console.log("Deleted " + title);
 	var book = booksRef.child(title);
 	book.remove();
 	printBooks();
+}
+
+function showBookInfo(clicked){
+	$("#currbooktitle, #currbookauthor, #currbookstatus").empty();
+
+	var title = $(clicked).parent().find(".booktitle").text();
+	console.log("Show info of " + title);
+	var bookRef = booksRef.child(title);
+	bookRef.once("value", function(snapshot){
+		var book = snapshot.val();
+		$("#currbooktitle").append("<i>" + book.title + "</i>");
+		$("#currbookauthor").append("by " + book.author);
+		$("#currbookstatus").append("Status: " + book.status);
+		if(book.quotes !== null){
+			for(quote in book.quotes){
+				$("#bookquotes").append("<li>'" + book.quotes[quote] + "'</li>");
+				//console.log("print quote");
+			}
+		}
+		$("#bookquotes").listview();
+		$("#bookquotes").listview("refresh");
+	}, function(errorObject){
+		console.log("The read failed: " + errorObject.code);
+	});
+	
+	$( ":mobile-pagecontainer" ).pagecontainer( "change", "#bookinfo", { role: "page" } );
 }
 
 function printBooks(){
@@ -189,27 +232,44 @@ function displayBook(snap){
 	//reload books on current page
 	if(page === "home"){
 		//Refresh all books list
-		$("#allBooks").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
+		$("#allBooks").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
+			 book["title"] + "</i></h2><p class='bookauthor'>" + 
+			 book["author"] + "</p><p>Status: " + 
+			 book["status"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 		$("#allBooks").listview();
 		$("#allBooks").listview("refresh");
 	} else if(page === "read") {
 		if(book.status === "read"){
-			$("#readBooks").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
+			$("#readBooks").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
+			 book["title"] + "</i></h2><p class='bookauthor'>" + 
+			 book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 			$("#readBooks").listview();
 			$("#readBooks").listview("refresh");
 		}
 	} else if(page === "wishlist"){
 		if(book.status === "to read"){
-			$("#to-read").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
+			$("#to-read").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
+			 book["title"] + "</i></h2><p class='bookauthor'>" + 
+			 book["author"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 			$("#to-read").listview();
 			$("#to-read").listview("refresh");
 		}
 	} else if(page === "reading"){
 		if(book.status === "reading"){
-			$("#readingBooks").append("<li><a href='#'><h2 class='booktitle'><i>" + book["title"] + "</i></h2><p class='bookauthor'>" + book["author"] + "</h2></p></a><a href='#' onclick='deleteBook(this)'></a></li>");
+			$("#readingBooks").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
+			 book["title"] + "</i></h2><p class='bookauthor'>" + 
+			 book["author"] + "</h2></p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 			$("#readingBooks").listview();
 			$("#readingBooks").listview("refresh");
 		}
+	} else if(page==="quotes"){
+		$("#selectQuoteBook").append("<option value='" + book["title"] + "'>" + book["title"] + " by " + book["author"] + "</option>");
+		for (quote in book.quotes){
+			$("#quoteList").append("<li>'" + book.quotes[quote] + "'<i><p>" + book["title"] + "</p></i>" + "</li>");
+		}
+		//$("#quoteList").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + book["quotes"] + "</h2></p></a><a href='#' onclick='deleteBook(this)'></a></li>");
+		$("#quoteList").listview();
+		$("#quoteList").listview("refresh");
 	}
 	console.log("Displayed");
 }
