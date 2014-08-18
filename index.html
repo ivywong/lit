@@ -64,7 +64,7 @@
 						<p><input type='text' id='authorInput' placeholder='Author'></input></p>
 						<div class="ui-field-contain">
 						    <label for="select-custom-1">Status:</label>
-						    <select name="select-custom-1" id="statusInput" data-native-menu="false">
+						    <select name="select-custom-1" id="statusInput" data-native-menu="true">
 						        <option value="read">Read</option>
 						        <option value="reading">Reading</option>
 						        <option value="to read">Going to Read</option>
@@ -75,7 +75,7 @@
 					</form>
 					<div>
 						<hr>
-						<p><ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="allBooks">
+						<p><ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="allBooks">
 							<!-- Books Here -->
 						<ul></p>
 					</div>
@@ -97,7 +97,7 @@
 					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					<hr>
 					<p>
-						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="readBooks">
+						<ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="readBooks">
 							<!-- Books Here -->
 						<ul>
 					</p>
@@ -119,7 +119,7 @@
 					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					<hr>
 					<p>
-						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="to-read">
+						<ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="to-read">
 							<!-- Books Here -->
 						<ul>
 					</p>
@@ -141,7 +141,7 @@
 					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					<hr>
 					<p>
-						<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="readingBooks">
+						<ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="readingBooks">
 							<!-- Books Here -->
 						<ul>
 					</p>
@@ -160,7 +160,7 @@
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
 					<p><b>These are my favorite books.</b></p>
-					<p><ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="favorites">
+					<p><ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="favorites">
 						<!-- Books Here -->
 					<ul></p>
 				</div>
