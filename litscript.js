@@ -203,7 +203,7 @@ function showBookInfo(clicked){
 		if(book.quotes !== null){
 			for(quote in book.quotes){
 				$("#bookquotes").append("<li>'" + book.quotes[quote] + "'</li>");
-				//console.log("print quote");
+				console.log("print quote");
 			}
 		}
 		$("#bookquotes").listview();
@@ -264,6 +264,7 @@ function displayBook(snap){
 		}
 	} else if(page==="quotes"){
 		$("#selectQuoteBook").append("<option value='" + book["title"] + "'>" + book["title"] + " by " + book["author"] + "</option>");
+		console.log("Added book to dropdown");
 		for (quote in book.quotes){
 			$("#quoteList").append("<li>'" + book.quotes[quote] + "'<i><p>" + book["title"] + "</p></i>" + "</li>");
 		}
