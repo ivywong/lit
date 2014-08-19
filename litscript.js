@@ -1,4 +1,4 @@
-var ref = new Firebase("https://testingdbs.firebaseio.com/users");
+var ref = new Firebase("https://itslit.firebaseio.com/users");
 var booksRef;
 var loggedIn = false;
 var uid = "";
@@ -48,7 +48,7 @@ var auth = new FirebaseSimpleLogin(ref, function(error, user){
 			}
 		});
 		
-		ref = new Firebase("https://testingdbs.firebaseio.com/users/" + uid);
+		ref = new Firebase("https://itslit.firebaseio.com/users/" + uid);
 		booksRef = ref.child("books");
 		
 		checkLoggedIn();
@@ -102,7 +102,7 @@ function loginWithFacebook() {
 function logout(){
 	clearLists();
 	$("#welcome").empty();
-	ref = new Firebase("https://testingdbs.firebaseio.com/users");
+	ref = new Firebase("https://itslit.firebaseio.com/users");
 	loggedIn = false;
     uid = "";
 	auth.logout();
