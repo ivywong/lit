@@ -7,6 +7,8 @@
 	<script src="https://cdn.firebase.com/js/client/1.0.18/firebase.js"></script>
 	<script src="https://cdn.firebase.com/js/simple-login/1.6.2/firebase-simple-login.js"></script>
 	<link rel="stylesheet" href="lit.css" />
+	<link rel="stylesheet" href="themes/theme.min.css" />
+	<link rel="stylesheet" href="themes/jquery.mobile.icons.min.css" />
 	<script src="litscript.js"></script>
 	<script id="panel-init">
 		$(function() {
@@ -21,7 +23,7 @@
 
 		<div data-role="page" id="main">
 			<div data-role="header">
-				<a href="#" class="ui-btn ui-btn-inline hideIfLoggedIn ui-btn-right" onclick="loginWithFacebook()">Login with FB</a>
+				<a href="#" class="ui-btn ui-btn-inline ui-corner-all hideIfLoggedIn ui-btn-right" onclick="loginWithFacebook()">Login with FB</a>
 				<a href="#popupRegister" data-rel="popup" class="ui-btn ui-corner-all ui-btn-inline hideIfLoggedIn" data-transition="pop">Register</a>
 				<div data-role="popup" id="popupRegister" data-theme="a" class="ui-corner-all">
 				    <form id="register">
@@ -43,16 +45,20 @@
 				        </div>
 				    </form>
 				</div>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
-			</div>		
+				<h1>LIT</h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>
+			<div data-role="main" class="ui-content">
+				<center><img src="LitLogo.png"></center>
+			</div>
+				<center><h8>(c) 2014 Ivy Wong, Regina Lin, Daniela Leguisamo, Katherine Bau, Trinity Lawrence -- All Rights Reserved<h8></center>
 		</div><!-- End splash/main page-->
 		
 	  	<div data-role="page" id="home">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>		
 		
 			<div data-role="main" class="ui-content">
@@ -86,13 +92,13 @@
 		<div data-role="page" id="read">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= "Lit.png" width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<p><b>I read all these books.</b></p>
+					<h2>Books I've Read</h2>
 					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					<hr>
 					<p>
@@ -107,13 +113,13 @@
 		<div data-role="page" id="wishlist">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<p><b>I want to read these books.</b></p>
+					<h2>Wishlist</h2>
 					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					<hr>
 					<p>
@@ -128,13 +134,13 @@
 		<div data-role="page" id="reading">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<p><b>I'm reading these books.</b></p>
+					<h2>Books I'm Reading</h2>
 					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
 					<hr>
 					<p>
@@ -149,21 +155,22 @@
 		<div data-role="page" id="quotes">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<p><b>Here are quotes. - Shakespeare</b></p>
+					<p><center>"The more that you read, the more things you will know. The more that you learn, the more places you'll go."</center></p>
+					<i><center> - Dr.Seuss</i></center>
 					<p><form id="quoteForm">
 						<!-- <label for="title" class="ui-field-contain">Title:</label> -->
 						<!-- <input type="text" name="Title" id="title"></input> -->
-						<p>Choose a book from the dropdown:<p>
+						<p><b>Choose a book from the dropdown:</p></b>
 						<form>
 							<input data-type="search" placeholder="Search for a title..." id="searchBooks">
 						</form>
-						<select id="selectQuoteBook" data-filter="true" data-input="#searchBooks">
+						<select id="selectQuoteBook" data-iconpos="left" data-filter="true" data-input="#searchBooks">
 							
 						</select>
 						<p>Quote:</p>
@@ -183,13 +190,13 @@
 		<div data-role="page" id="explore">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>
 			
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<center><h1> Explore books </h1></center>
+					<center><h1> Explore Books </h1></center>
 					<div class="my-form">
 						<form role="form" method="post" id="formThing">
 							<p class="text-box">
@@ -214,8 +221,8 @@
 		<div data-role="page" id="bookinfo">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
-				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
@@ -254,7 +261,7 @@
 				<li><a href="#home">Home</a></li>
 				<li><a href="#read">Books I've Read </a></li>
 				<li><a href="#reading">Books I'm Reading </a></li>
-				<li><a href="#wishlist">Books to Read</a></li>
+				<li><a href="#wishlist">Wishlist</a></li>
 				<!-- <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
 					<h1>Shelves</h1>
 					<a href="#myPopup" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-right">Add New</a>
@@ -273,6 +280,9 @@
 				</div> -->
 				<li><a href="#quotes" onclick="printBooks()">Quotes</a></li>
 				<li><a href="#explore">Explore</a></li>
+				<br>
+				<br>
+				<img src= LitLogo.png width=250 height="auto">
 			</ul>
 		</div>
 	</body>
