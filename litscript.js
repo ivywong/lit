@@ -110,33 +110,28 @@ function logout(){
 }
 
 function clearLists(){
-	$("#readBooks, #readingBooks, #allBooks, #to-read, #quoteList, #selectQuoteBook").empty();
+	$("#readBooks, #readingBooks, #allBooks, #to-read, #quoteList, #bookquotes, #selectQuoteBook").empty();
 	console.log("cleared");
 }
 
-/* function addtoList(){
-	var newAddition=$('input[id="addNew"]').val().trim();
-	if ( newAddition ) {
-        $('.listItems').append('<li>'+newAddition+'</li>');
-		document.getElementById("myForm").reset();
-	}
-	$("#woohoo").listview();		
-	$("#woohoo").listview("refresh");
-} */
-
 $(document).ready( function(){
-	//checkLoggedIn();
+	checkLoggedIn();
 	console.log("Ready.");
 
+	//maybe combine these all into one thing later
 	$("#myForm").submit( function(event){
 		event.preventDefault();
-		//addtoList();
 		return false;
 	});
 	
 	$("#quoteForm").submit( function(event){
 		event.preventDefault();
-		addtoList();
+		return false;
+	});
+	
+	$("#updateStatus").submit( function(event){
+		event.preventDefault();
+		updateStatus();
 		return false;
 	});
 
@@ -144,6 +139,16 @@ $(document).ready( function(){
 		event.preventDefault();
 		addBook();
 		return false;
+	});
+
+	$("#formThing").submit( function(event){
+		event.preventDefault();
+		return false; 
+	});
+
+	$("#singleBookQuote").submit( function(event){
+		event.preventDefault();
+		return false; 
 	});
 
 	$('#bookInput').keypress(function (e) {
@@ -154,9 +159,26 @@ $(document).ready( function(){
 	});
 });
 
+//not working
+$('#bookinfo').on('pagecontainershow',function(event){
+    var myselect = $("select#editbookstatus1");
+	if($("#currbookstatus").text() === "read"){
+		myselect[0].selectedIndex = 0;
+	} else if($("#currbookstatus").text() === "reading"){
+		myselect[0].selectedIndex = 1;
+	} else {
+		myselect[0].selectedIndex = 2;
+	}
+    myselect.selectmenu("refresh");
+	console.log("update status menu");
+});
+
 function addBook(){
 	var author = $('#authorInput').val();
 	var title = $('#titleInput').val();
+	//format title so it doesn't contain invalid characters
+	title = title.replace(/[.$\[\]\/]/g, "");
+	console.log("Added " + title);
 	var status = $("#statusInput").val();
 	//console.log(title, author);
 	if(status === ""){
@@ -175,10 +197,38 @@ function addQuote(){
 	var quote = $("#addNew").val();
 	//console.log(title, author);
 	//alert(quote)
-	booksRef.child(title + "/quotes").push(quote);
+	if(quote !== ""){
+		booksRef.child(title + "/quotes").push(quote);
+	}
 	$('#selectQuoteBook').val('');
 	$('#addNew').val('');
 	printBooks();
+}
+
+function addSpecQuote(){
+	var title = $('#currbooktitle').text();
+	var quote = $("#currnewquote").val();
+	//console.log(title, author);
+	//alert(quote)
+	if(quote !== ""){
+		booksRef.child(title + "/quotes").push(quote);
+	}
+	$('#currnewquote').val('');
+	reloadQuotes();
+}
+
+//edit the status of the book from the book info page
+function updateStatus(){
+	var status = $("#editstatusinput1").val();
+	//console.log(title, author);
+	if(status === ""){
+		console.log("no status");
+		status = "read";
+	}
+	var bookRef = booksRef.child($("#currbooktitle").text());
+	bookRef.update({ "status": status }); 
+	$("#editstatusinput1").val("");
+	console.log("updated status");
 }
 
 function deleteBook(clicked){
@@ -189,32 +239,73 @@ function deleteBook(clicked){
 	printBooks();
 }
 
+function deleteQuote(clicked){
+	var page = $(":mobile-pagecontainer").pagecontainer("getActivePage")[0].id;
+	var title;
+	if(page === "quotes"){ 
+		title = $(clicked).parent().find(".booktitle").text();
+	}
+	else if(page === "bookinfo"){
+		title = $("#currbooktitle").text();
+	}
+	var quoteid = $(clicked).parent().find("#quoteID").val();
+	console.log("Deleted quote from " + title);
+	console.log("Quote ID: " + quoteid);
+	var quote = booksRef.child(title + "/quotes/" + quoteid);
+	quote.remove();
+	if(page === "quotes"){ 
+		printBooks(); 
+	}
+	else if(page === "bookinfo"){
+		reloadQuotes();
+	}
+}
+
+//display the book page
 function showBookInfo(clicked){
 	$("#currbooktitle, #currbookauthor, #currbookstatus").empty();
 
 	var title = $(clicked).parent().find(".booktitle").text();
-	console.log("Show info of " + title);
+	//console.log("Show info of " + title);
 	var bookRef = booksRef.child(title);
 	bookRef.once("value", function(snapshot){
 		var book = snapshot.val();
 		$("#currbooktitle").append("<i>" + book.title + "</i>");
 		$("#currbookauthor").append("by " + book.author);
 		$("#currbookstatus").append("Status: " + book.status);
-		if(book.quotes !== null){
-			for(quote in book.quotes){
-				$("#bookquotes").append("<li>'" + book.quotes[quote] + "'</li>");
-				console.log("print quote");
-			}
-		}
-		$("#bookquotes").listview();
-		$("#bookquotes").listview("refresh");
+		reloadQuotes();
 	}, function(errorObject){
 		console.log("The read failed: " + errorObject.code);
 	});
-	
 	$( ":mobile-pagecontainer" ).pagecontainer( "change", "#bookinfo", { role: "page" } );
+	console.log("Show info of " + title);
 }
 
+//reload quotes on the book page
+function reloadQuotes() {
+	clearLists();
+	var bookRef = booksRef.child($("#currbooktitle").text());
+	bookRef.once("value", function(snapshot){
+		var book = snapshot.val();
+		if(book.quotes !== null){
+			for(quote in book.quotes){
+				//replace newlines with <br> so spacing is correct(er)
+				var formattedQuote = book.quotes[quote].replace(/\n/g, "<br>");
+				$("#bookquotes").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + book.quotes[quote] + " " + book["title"] + "'>" + 
+			 	 "<h2>'" + book.quotes[quote] + "'</h2>" + 
+			 	 "<p>'" + formattedQuote + "'</p><i>" + 
+			 	 "<input type='hidden' id='quoteID' value='" + quote + "'>" + 
+			 	 "<a href='#' class='ui-btn ui-btn-icon-left ui-icon-delete ui-corner-all ui-btn-inline' onclick='deleteQuote(this)'>Delete</a></div>");
+				//console.log("print quote");
+			}
+		}
+		$( "#bookquotes" ).collapsibleset().trigger('create')
+	}, function(errorObject){
+		console.log("The read failed: " + errorObject.code);
+	});
+}
+
+//show/update all the books in the book lists
 function printBooks(){
 	clearLists();
 	booksRef.on("child_added", function (snapshot) {
@@ -266,11 +357,53 @@ function displayBook(snap){
 		$("#selectQuoteBook").append("<option value='" + book["title"] + "'>" + book["title"] + " by " + book["author"] + "</option>");
 		console.log("Added book to dropdown");
 		for (quote in book.quotes){
-			$("#quoteList").append("<li>'" + book.quotes[quote] + "'<i><p>" + book["title"] + "</p></i>" + "</li>");
+			$("#quoteList").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + book.quotes[quote] + " " + book["title"] + "'>" + 
+			 "<h2>'" + book.quotes[quote] + "'</h2>" + 
+			 "<p>'" + book.quotes[quote] + "'</p><i>" + 
+			 "<p class='booktitle'>" + book["title"] + "</p></i>" + 
+			 "<input type='hidden' id='quoteID' value='" + quote + "'>" + 
+			 "<a href='#' class='ui-btn ui-btn-icon-left ui-icon-delete ui-corner-all ui-btn-inline' onclick='deleteQuote(this)'>Delete</a></div>");
 		}
-		//$("#quoteList").append("<li><a href='#'><i>" + book["title"] + "</i><h2><p>" + book["author"] + book["quotes"] + "</h2></p></a><a href='#' onclick='deleteBook(this)'></a></li>");
-		$("#quoteList").listview();
-		$("#quoteList").listview("refresh");
+		$( "#quoteList" ).collapsibleset().trigger('create');
 	}
 	console.log("Displayed");
+}
+
+//search using google books api
+function submitStuff() {
+	//prints the input 
+    var element = document.getElementById('exploreTitleInput').value;
+    console.log(element);
+    
+	//split input string and show url
+	var url = "https://www.googleapis.com/books/v1/volumes?q=intitle:" 
+	var str = element;
+	var res = str.split(" ");
+	for (i=0; i < res.length; i++) {	
+		console.log(res[i]);
+		url+= res[i] + "+"; 
+	}
+	
+	//redirect to search items
+	$.get(url, function(data) {
+		var items = data.items;
+		$("#listy").empty("");
+		for (i=0; i< items.length; i++) {
+			//var urlThing = '<li><a href="' + url + '">' + items[i].volumeInfo.title + '</a></li>'
+			var urlForEach = url + items[i].id;
+			var imgLink = items[i].volumeInfo.imageLinks.thumbnail;
+			var urlThing = '<li>'  +
+			 '<img src="'+ imgLink + 
+			 '">' + '<h3>' + items[i].volumeInfo.title + '</h3>' + "<i>" + 
+			 items[i].volumeInfo.authors + '</i><p>' + items[i].volumeInfo.description  +'</p></li>';
+			
+			$("#listy").append(urlThing);
+			console.log("URL" + items[i].volumeInfo.imageLinks.thumbnail); 
+			console.log(items[i].volumeInfo);
+
+			$("#listy").listview();
+			$("#listy").listview("refresh");
+		}
+		
+	});
 }
