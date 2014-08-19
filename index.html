@@ -157,26 +157,59 @@
 				<div class="showIfLoggedIn">
 					<p><b>Here are quotes. - Shakespeare</b></p>
 					<p><form id="quoteForm">
-								<!-- <label for="title" class="ui-field-contain">Title:</label> -->
-								<!-- <input type="text" name="Title" id="title"></input> -->
-								<p>Choose a book from the dropdown:<p>
-								<form>
-									<input data-type="search" placeholder="Search for a title..." id="searchBooks">
-								</form>
-								<select id="selectQuoteBook" data-filter="true" data-input="#searchBooks">
-									
-								</select>
-								<p>Quote:</p>
-								<textarea name="NewQuote" id="addNew"></textarea>
-								<input type="submit" value="Add New Quote" data-theme="b" onclick="addQuote()"></input>
-						</form></p>
+						<!-- <label for="title" class="ui-field-contain">Title:</label> -->
+						<!-- <input type="text" name="Title" id="title"></input> -->
+						<p>Choose a book from the dropdown:<p>
+						<form>
+							<input data-type="search" placeholder="Search for a title..." id="searchBooks">
+						</form>
+						<select id="selectQuoteBook" data-filter="true" data-input="#searchBooks">
+							
+						</select>
+						<p>Quote:</p>
+						<textarea name="NewQuote" id="addNew"></textarea>
+						<input type="submit" value="Add New Quote" data-theme="b" onclick="addQuote()"></input>
+					</form></p>
 					<p><a href="#" onclick="printBooks()">Reload Quotes</a></p>	
-					<div data-role="list-view" data-filter-placeholder="Search..." data-filter="true" data-inset="true" id="quoteList">
-						
-					</div>	
+					<form>
+					    <input data-type="search" id="searchAllQuotesList">
+					</form>
+					    <div data-role="collapsibleset" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="quoteList" data-input="#searchAllQuotesList">
+					    </div>
 				</div>
 			</div>
 		</div><!--End quotes page -->
+		
+		<div data-role="page" id="explore">
+			<div data-role="header">
+				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> Lit </h1>
+				<a href="#" class="ui-btn ui-btn-inline ui-btn-right showIfLoggedIn" onclick="logout()">Logout</a>
+			</div>
+			
+			<div data-role="main" class="ui-content">
+				<div class="showIfLoggedIn">
+					<center><h1> Explore books </h1></center>
+					<div class="my-form">
+						<form role="form" method="post" id="formThing">
+							<p class="text-box">
+								<label for = "Title"> Search for a book. </label> 
+								<input type="text" name="boxes[]" value="" id="exploreTitleInput"  />
+								<p><label for ="listItemInput">
+								<input type="submit" id="buttonThing" value="Submit" onclick="submitStuff()"></p> 
+							</p>
+						</form>
+					</div>
+				
+					<!-- title list-->
+					<div id="listPart">
+						<ul data-role="listview" data-inset="true" data-split-theme="a" id="listy">
+						
+						</ul>
+					</div>
+				</div>
+			</div>
+		</div><!--End explore page -->
 		
 		<div data-role="page" id="bookinfo">
 			<div data-role="header">
@@ -187,46 +220,60 @@
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
-					<a href ="#" class="ui-btn ui-btn-icon-left ui-icon-edit ui-corner-all ui-btn-inline">Edit</a>
+					<!-- <a href ="#" class="ui-btn ui-btn-icon-left ui-icon-edit ui-corner-all ui-btn-inline">Edit</a> -->
 					<h1 id="currbooktitle"></h1>
 					<h2 id="currbookauthor"></h2>
-					<h4 id="currbookstatus"></h4>
-					<hr>
+					<form id="updateStatus">
+						<div class="ui-field-contain">
+							<label for="select-custom-1">Status:</label>
+							<select name="select-custom-1" id="editstatusinput1" data-native-menu="true">
+								<option value="read">Read</option>
+								<option value="reading">Reading</option>
+								<option value="to read">Going to Read</option>
+							</select>
+						</div>
+						<p><input type="submit" data-theme="b" id="updatedStatusInput" value="Update Status"></input></p>
+					</form>
 					<h3>Quotes</h3>
+					<form id="singleBookQuote"> 
+						<p>Add a quote:</p>
+						<textarea name="NewQuote" id="currnewquote"></textarea>
+						<input type="submit" value="Add New Quote" data-theme="b" onclick="addSpecQuote()"></input>
+					</form>
+					<p><a href="#" onclick="reloadQuotes()">Reload Quotes</a></p>	
 					<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="bookquotes">
 					
 					</ul>
 				</div>
 			</div>
 		</div><!--End book information page -->
-		
+
 		<div data-role="panel" id="myPanel" data-position="left" data-display="push" data-theme="a"> 
-				<h2>Menu</h2>
-				<ul data-role="listview">
-					<li><a href="#home">Home</a></li>
-					<li><a href="#read">Books I've Read </a></li>
-					<li><a href="#reading">Books I'm Reading </a></li>
-					<li><a href="#wishlist">Books to Read</a></li>
-					<!-- <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
-						<h1>Shelves</h1>
-						<a href="#myPopup" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-right">Add New</a>
-						<div data-role="popup" id="myPopup" data-theme="a">
-							<p>
-							<form id="myForm">
-								<label for="Add New" class="ui-field-contain">Add New Shelf:</label>
-								<input type="text" name="NewAddition" id="addNew"></input>
-								<input type="submit" value="Add"></input>
-							</form>
-							</p>
-						</div>
-						<ul data-role="listview" class="listItems" id="woohoo">
-							
-						</ul>
-					</div> -->
-					<li><a href="#quotes" onclick="printBooks()">Quotes</a></li>
-				</ul>
-			</div>
-		  
+			<h2>Menu</h2>
+			<ul data-role="listview">
+				<li><a href="#home">Home</a></li>
+				<li><a href="#read">Books I've Read </a></li>
+				<li><a href="#reading">Books I'm Reading </a></li>
+				<li><a href="#wishlist">Books to Read</a></li>
+				<!-- <div data-role="collapsible" data-collapsed-icon="carat-d" data-expanded-icon="carat-u" data-iconpos="right">
+					<h1>Shelves</h1>
+					<a href="#myPopup" data-rel="popup" class="ui-btn ui-icon-plus ui-btn-icon-right">Add New</a>
+					<div data-role="popup" id="myPopup" data-theme="a">
+						<p>
+						<form id="myForm">
+							<label for="Add New" class="ui-field-contain">Add New Shelf:</label>
+							<input type="text" name="NewAddition" id="addNew"></input>
+							<input type="submit" value="Add"></input>
+						</form>
+						</p>
+					</div>
+					<ul data-role="listview" class="listItems" id="woohoo">
+						
+					</ul>
+				</div> -->
+				<li><a href="#quotes" onclick="printBooks()">Quotes</a></li>
+				<li><a href="#explore">Explore</a></li>
+			</ul>
+		</div>
 	</body>
 </html>
- 
