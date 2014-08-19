@@ -357,9 +357,10 @@ function displayBook(snap){
 		$("#selectQuoteBook").append("<option value='" + book["title"] + "'>" + book["title"] + " by " + book["author"] + "</option>");
 		console.log("Added book to dropdown");
 		for (quote in book.quotes){
+			var formattedQuote = book.quotes[quote].replace(/\n/g, "<br>");
 			$("#quoteList").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + book.quotes[quote] + " " + book["title"] + "'>" + 
 			 "<h2>'" + book.quotes[quote] + "'</h2>" + 
-			 "<p>'" + book.quotes[quote] + "'</p><i>" + 
+			 "<p>'" + formattedQuote + "'</p><i>" + 
 			 "<p class='booktitle'>" + book["title"] + "</p></i>" + 
 			 "<input type='hidden' id='quoteID' value='" + quote + "'>" + 
 			 "<a href='#' class='ui-btn ui-btn-icon-left ui-icon-delete ui-corner-all ui-btn-inline' onclick='deleteQuote(this)'>Delete</a></div>");
