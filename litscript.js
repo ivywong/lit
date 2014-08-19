@@ -52,6 +52,7 @@ var auth = new FirebaseSimpleLogin(ref, function(error, user){
 		booksRef = ref.child("books");
 		
 		checkLoggedIn();
+		printBooks();
   	} else {
     	// user is logged out
     	console.log("loggedout")
@@ -161,21 +162,43 @@ $(document).ready( function(){
 			addBook();
 		}
 	});
+	
+	
+	$('#bookinfo').pagecontainer({
+		load: function(event, ui){
+			var myselect = $("select#editbookstatus1");
+			if($("#currbookstatus").text() === "read"){
+				myselect[0].selectedIndex = 0;
+			} else if($("#currbookstatus").text() === "reading"){
+				myselect[0].selectedIndex = 1;
+			} else {
+				myselect[0].selectedIndex = 2;
+			}
+			myselect.selectmenu();
+			myselect.selectmenu("refresh");
+			console.log("update status menu");
+		}
+	});
 });
 
 //not working
-$('#bookinfo').on('pagecontainershow',function(event){
-    var myselect = $("select#editbookstatus1");
-	if($("#currbookstatus").text() === "read"){
-		myselect[0].selectedIndex = 0;
-	} else if($("#currbookstatus").text() === "reading"){
-		myselect[0].selectedIndex = 1;
-	} else {
-		myselect[0].selectedIndex = 2;
+$('#bookinfo').pagecontainer({
+	load: function(event, ui){
+		var myselect = $("select#editbookstatus1");
+		if($("#currbookstatus").text() === "read"){
+			myselect[0].selectedIndex = 0;
+		} else if($("#currbookstatus").text() === "reading"){
+			myselect[0].selectedIndex = 1;
+		} else {
+			myselect[0].selectedIndex = 2;
+		}
+		myselect.selectmenu();
+		myselect.selectmenu("refresh");
+		console.log("update status menu");
 	}
-    myselect.selectmenu("refresh");
-	console.log("update status menu");
 });
+
+
 
 function addBook(){
 	var author = $('#authorInput').val();
@@ -196,14 +219,20 @@ function addBook(){
 }
 
 function addQuote(){
+	$("#error").empty();
 	var title = $('#selectQuoteBook').val();
 	var quote = $("#addNew").val();
-	//console.log(title, author);
+	console.log(title, quote);
+	console.log(typeof title);
 	//alert(quote)
-	if(quote !== ""){
+	//check if title is undefined
+	if(quote !== "" && title !== "" && title !== null && (typeof title !== 'undefined')){
 		booksRef.child(title + "/quotes").push(quote);
+		//console.log(typeof title);
+	} else {
+		$("#error").append("Make sure you choose a valid book and quote!");
 	}
-	$('#selectQuoteBook').val('');
+	console.log($("#selectQuoteBook").val());
 	$('#addNew').val('');
 	printBooks();
 }
@@ -311,6 +340,7 @@ function reloadQuotes() {
 //show/update all the books in the book lists
 function printBooks(){
 	clearLists();
+	console.log("print stuff");
 	booksRef.on("child_added", function (snapshot) {
 		//console.log(snapshot.val());
 		displayBook(snapshot);
@@ -324,7 +354,7 @@ function displayBook(snap){
 	var page = $(":mobile-pagecontainer").pagecontainer("getActivePage")[0].id;
 	book = snap.val();
 	//reload books on current page
-	if(page === "home"){
+	//if(page === "home"){
 		//Refresh all books list
 		$("#allBooks").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
 			 book["title"] + "</i></h2><p class='bookauthor'>" + 
@@ -332,7 +362,7 @@ function displayBook(snap){
 			 book["status"] + "</p></a><a href='#' onclick='deleteBook(this)'></a></li>");
 		$("#allBooks").listview();
 		$("#allBooks").listview("refresh");
-	} else if(page === "read") {
+	//} else if(page === "read") {
 		if(book.status === "read"){
 			$("#readBooks").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
 			 book["title"] + "</i></h2><p class='bookauthor'>" + 
@@ -340,7 +370,7 @@ function displayBook(snap){
 			$("#readBooks").listview();
 			$("#readBooks").listview("refresh");
 		}
-	} else if(page === "wishlist"){
+	//} else if(page === "wishlist"){
 		if(book.status === "to read"){
 			$("#to-read").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
 			 book["title"] + "</i></h2><p class='bookauthor'>" + 
@@ -348,7 +378,7 @@ function displayBook(snap){
 			$("#to-read").listview();
 			$("#to-read").listview("refresh");
 		}
-	} else if(page === "reading"){
+	//} else if(page === "reading"){
 		if(book.status === "reading"){
 			$("#readingBooks").append("<li><a href='#' onclick='showBookInfo(this)'><h2 class='booktitle'><i>" + 
 			 book["title"] + "</i></h2><p class='bookauthor'>" + 
@@ -356,9 +386,7 @@ function displayBook(snap){
 			$("#readingBooks").listview();
 			$("#readingBooks").listview("refresh");
 		}
-	} else if(page==="quotes"){
-		$("#selectQuoteBook").append("<option value='" + book["title"] + "'>" + book["title"] + " by " + book["author"] + "</option>");
-		console.log("Added book to dropdown");
+	//} else if(page==="quotes"){
 		for (quote in book.quotes){
 			var formattedQuote = book.quotes[quote].replace(/\n/g, "<br>");
 			$("#quoteList").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + book.quotes[quote] + " " + book["title"] + "'>" + 
@@ -369,7 +397,15 @@ function displayBook(snap){
 			 "<a href='#' class='ui-btn ui-btn-icon-left ui-icon-delete ui-corner-all ui-btn-inline' onclick='deleteQuote(this)'>Delete</a></div>");
 		}
 		$( "#quoteList" ).collapsibleset().trigger('create');
+	//}
+	if($("#selectQuoteBook").children().length === 0){
+		console.log("no children");
+		$("#selectQuoteBook").append("<option value=\"" + book["title"] + "\" selected='selected'>" + book["title"] + " by " + book["author"] + "</option>");
+	} else {
+		$("#selectQuoteBook").append("<option value=\"" + book["title"] + "\">" + book["title"] + " by " + book["author"] + "</option>");
 	}
+	$( "#selectQuoteBook").selectmenu();
+	$( "#selectQuoteBook" ).selectmenu( "refresh" );
 	console.log("Displayed");
 }
 
