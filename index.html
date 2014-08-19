@@ -57,7 +57,7 @@
 	  	<div data-role="page" id="home">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>		
 		
@@ -77,7 +77,7 @@
 						    </select>
 						</div>
 						<p><input type="submit" data-theme="b" id="addBook" value="Add Book"></input></p>
-						<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+						<p><a href="#" onclick="printBooks()">View Books</a></p>
 					</form>
 					<div>
 						<hr>
@@ -92,14 +92,14 @@
 		<div data-role="page" id="read">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= "Lit.png" width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
 					<h2>Books I've Read</h2>
-					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					<p><a href="#" onclick="printBooks()">View Books</a></p>
 					<hr>
 					<p>
 						<ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="readBooks">
@@ -113,14 +113,14 @@
 		<div data-role="page" id="wishlist">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
 					<h2>Wishlist</h2>
-					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					<p><a href="#" onclick="printBooks()">View Books</a></p>
 					<hr>
 					<p>
 						<ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="to-read">
@@ -134,14 +134,14 @@
 		<div data-role="page" id="reading">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
 			<div data-role="main" class="ui-content">
 				<div class="showIfLoggedIn">
 					<h2>Books I'm Reading</h2>
-					<p><a href="#" onclick="printBooks()">Reload Books</a></p>
+					<p><a href="#" onclick="printBooks()">View Books</a></p>
 					<hr>
 					<p>
 						<ul data-role="listview" data-filter="true" data-split-icon="delete" data-filter-placeholder="Search..." data-inset="true" id="readingBooks">
@@ -155,7 +155,7 @@
 		<div data-role="page" id="quotes">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
@@ -167,17 +167,14 @@
 						<!-- <label for="title" class="ui-field-contain">Title:</label> -->
 						<!-- <input type="text" name="Title" id="title"></input> -->
 						<p><b>Choose a book from the dropdown:</p></b>
-						<form>
-							<input data-type="search" placeholder="Search for a title..." id="searchBooks">
-						</form>
-						<select id="selectQuoteBook" data-iconpos="left" data-filter="true" data-input="#searchBooks">
+						<select id="selectQuoteBook" data-iconpos="left">
 							
 						</select>
 						<p>Quote:</p>
 						<textarea name="NewQuote" id="addNew"></textarea>
 						<input type="submit" value="Add New Quote" data-theme="b" onclick="addQuote()"></input>
 					</form></p>
-					<p><a href="#" onclick="printBooks()">Reload Quotes</a></p>	
+					<p><a href="#" onclick="printBooks()">View Quotes</a></p>	
 					<form>
 					    <input data-type="search" id="searchAllQuotesList">
 					</form>
@@ -190,7 +187,7 @@
 		<div data-role="page" id="explore">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>
 			
@@ -221,7 +218,7 @@
 		<div data-role="page" id="bookinfo">
 			<div data-role="header">
 				<a href="#myPanel" class="ui-btn ui-btn-inline ui-corner-all showIfLoggedIn">Menu</a>
-				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src= Lit.png width=75 height="auto"> </h1>
+				<h1 title="by Ivy, Regina, Kat, Daniela, Trinity"> <img src="LIT.png" width=75 height="auto"> </h1>
 				<a href="#" class="ui-btn ui-btn-inline ui-btn-right ui-corner-all showIfLoggedIn" onclick="logout()">Logout</a>
 			</div>	
 		
@@ -247,7 +244,7 @@
 						<textarea name="NewQuote" id="currnewquote"></textarea>
 						<input type="submit" value="Add New Quote" data-theme="b" onclick="addSpecQuote()"></input>
 					</form>
-					<p><a href="#" onclick="reloadQuotes()">Reload Quotes</a></p>	
+					<p><a href="#" onclick="reloadQuotes()">View Quotes</a></p>	
 					<ul data-role="listview" data-filter="true" data-filter-placeholder="Search..." data-inset="true" id="bookquotes">
 					
 					</ul>
