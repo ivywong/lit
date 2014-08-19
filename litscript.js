@@ -407,4 +407,6 @@ function submitStuff() {
 		}
 		
 	});
+	
+	$('#exploreTitleInput').val('');
 }
