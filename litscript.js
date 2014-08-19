@@ -84,6 +84,8 @@ function signUp(){
 		    alert(error);
 		}
 	});
+	$("#register-email").val("");
+	$("#register-password").val("");
 }
 
 function emailLogin(){
@@ -93,6 +95,8 @@ function emailLogin(){
   		email: email,
   		password: password
 	});
+	$("#login-email").val("");
+	$("#login-password").val("");
 }
 	
 function loginWithFacebook() {
