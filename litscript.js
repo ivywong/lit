@@ -188,7 +188,6 @@ function addBook(){
 	booksRef.child(title).set({"author": author, "title": title, "status":status });
 	$('#titleInput').val('');
 	$('#authorInput').val('');
-	$("#statusInput").val("");
 	printBooks();
 }
 
