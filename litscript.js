@@ -124,12 +124,7 @@ $(document).ready( function(){
 	console.log("Ready.");
 
 	//maybe combine these all into one thing later
-	$("#myForm").submit( function(event){
-		event.preventDefault();
-		return false;
-	});
-	
-	$("#quoteForm").submit( function(event){
+	$("#myForm, #quoteForm, #formThing, #singleBookQuote").submit( function(event){
 		event.preventDefault();
 		return false;
 	});
@@ -146,59 +141,24 @@ $(document).ready( function(){
 		return false;
 	});
 
-	$("#formThing").submit( function(event){
+	$("#bookInput2").submit( function(event){
 		event.preventDefault();
-		return false; 
+		addReadBook();
+		return false;
 	});
 
-	$("#singleBookQuote").submit( function(event){
+	$("#bookInput3").submit( function(event){
 		event.preventDefault();
-		return false; 
+		addReadingBook();
+		return false;
 	});
 
-	$('#bookInput').keypress(function (e) {
-		//console.log(e.keyCode);
-		if (e.keyCode == 13) {
-			addBook();
-		}
-	});
-	
-	
-	$('#bookinfo').pagecontainer({
-		load: function(event, ui){
-			var myselect = $("select#editbookstatus1");
-			if($("#currbookstatus").text() === "read"){
-				myselect[0].selectedIndex = 0;
-			} else if($("#currbookstatus").text() === "reading"){
-				myselect[0].selectedIndex = 1;
-			} else {
-				myselect[0].selectedIndex = 2;
-			}
-			myselect.selectmenu();
-			myselect.selectmenu("refresh");
-			console.log("update status menu");
-		}
+	$("#bookInput4").submit( function(event){
+		event.preventDefault();
+		addWishlistBook();
+		return false;
 	});
 });
-
-//not working
-$('#bookinfo').pagecontainer({
-	load: function(event, ui){
-		var myselect = $("select#editbookstatus1");
-		if($("#currbookstatus").text() === "read"){
-			myselect[0].selectedIndex = 0;
-		} else if($("#currbookstatus").text() === "reading"){
-			myselect[0].selectedIndex = 1;
-		} else {
-			myselect[0].selectedIndex = 2;
-		}
-		myselect.selectmenu();
-		myselect.selectmenu("refresh");
-		console.log("update status menu");
-	}
-});
-
-
 
 function addBook(){
 	var author = $('#authorInput').val();
@@ -215,6 +175,45 @@ function addBook(){
 	booksRef.child(title).set({"author": author, "title": title, "status":status });
 	$('#titleInput').val('');
 	$('#authorInput').val('');
+	printBooks();
+}
+
+function addReadBook(){
+	var author = $('#authorInputRead').val();
+	var title = $('#titleInputRead').val();
+	//format title so it doesn't contain invalid characters
+	title = title.replace(/[.$\[\]\/]/g, "");
+	console.log("Added " + title);
+	var status = "read";
+	booksRef.child(title).set({"author": author, "title": title, "status":status });
+	$('#titleInputRead').val('');
+	$('#authorInputRead').val('');
+	printBooks();
+}
+
+function addReadingBook(){
+	var author = $('#authorInputReading').val();
+	var title = $('#titleInputReading').val();
+	//format title so it doesn't contain invalid characters
+	title = title.replace(/[.$\[\]\/]/g, "");
+	console.log("Added " + title);
+	var status = "reading";
+	booksRef.child(title).set({"author": author, "title": title, "status":status });
+	$('#titleInputReading').val('');
+	$('#authorInputReading').val('');
+	printBooks();
+}
+
+function addWishlistBook(){
+	var author = $('#authorInputWish').val();
+	var title = $('#titleInputWish').val();
+	//format title so it doesn't contain invalid characters
+	title = title.replace(/[.$\[\]\/]/g, "");
+	console.log("Added " + title);
+	var status = "to read";
+	booksRef.child(title).set({"author": author, "title": title, "status":status });
+	$('#authorInputWish').val('');
+	$('#titleInputWish').val('');
 	printBooks();
 }
 
