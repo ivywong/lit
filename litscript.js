@@ -227,7 +227,10 @@ function addQuote(){
 	//alert(quote)
 	//check if title is undefined
 	if(quote !== "" && title !== "" && title !== null && (typeof title !== 'undefined')){
-		booksRef.child(title + "/quotes").push(quote);
+		var goodQuote = quote
+  			.replace(/[\u2018\u2019]/g, "\'")
+  			.replace(/[\u201C\u201D]/g, '\"');
+		booksRef.child(title + "/quotes").push(goodQuote);
 		//console.log(typeof title);
 	} else {
 		$("#error").append("Make sure you choose a valid book and quote!");
@@ -243,7 +246,10 @@ function addSpecQuote(){
 	//console.log(title, author);
 	//alert(quote)
 	if(quote !== ""){
-		booksRef.child(title + "/quotes").push(quote);
+		var goodQuote = quote
+  			.replace(/[\u2018\u2019]/g, "'")
+  			.replace(/[\u201C\u201D]/g, '"');
+		booksRef.child(title + "/quotes").push(goodQuote);
 	}
 	$('#currnewquote').val('');
 	reloadQuotes();
@@ -323,8 +329,9 @@ function reloadQuotes() {
 			for(quote in book.quotes){
 				//replace newlines with <br> so spacing is correct(er)
 				var formattedQuote = book.quotes[quote].replace(/\n/g, "<br>");
-				$("#bookquotes").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + book.quotes[quote] + " " + book["title"] + "'>" + 
-			 	 "<h2>'" + book.quotes[quote] + "'</h2>" + 
+				var escapedQuote = book.quotes[quote].replace(/\'/g,"&#39;").replace(/\"/g,"&quot;");
+				$("#bookquotes").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + escapedQuote + " " + book["title"] + "'>" + 
+			 	 "<h2>'" + escapedQuote + "'</h2>" + 
 			 	 "<p>'" + formattedQuote + "'</p><i>" + 
 			 	 "<input type='hidden' id='quoteID' value='" + quote + "'>" + 
 			 	 "<a href='#' class='ui-btn ui-btn-icon-left ui-icon-delete ui-corner-all ui-btn-inline' onclick='deleteQuote(this)'>Delete</a></div>");
@@ -389,9 +396,10 @@ function displayBook(snap){
 	//} else if(page==="quotes"){
 		for (quote in book.quotes){
 			var formattedQuote = book.quotes[quote].replace(/\n/g, "<br>");
-			$("#quoteList").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + book.quotes[quote] + " " + book["title"] + "'>" + 
-			 "<h2>'" + book.quotes[quote] + "'</h2>" + 
-			 "<p>'" + formattedQuote + "'</p><i>" + 
+			var escapedQuote = book.quotes[quote].replace(/\'/g,"&#39;").replace(/\"/g,"&quot;");
+			$("#quoteList").append("<div data-role='collapsible' data-iconpos='right' data-filtertext='" + escapedQuote + " " + book["title"] + "'>" + 
+			 "<h2>'" + escapedQuote + "'</h2>" + 
+			 "<p>" + formattedQuote + "</p><i>" + 
 			 "<p class='booktitle'>" + book["title"] + "</p></i>" + 
 			 "<input type='hidden' id='quoteID' value='" + quote + "'>" + 
 			 "<a href='#' class='ui-btn ui-btn-icon-left ui-icon-delete ui-corner-all ui-btn-inline' onclick='deleteQuote(this)'>Delete</a></div>");
